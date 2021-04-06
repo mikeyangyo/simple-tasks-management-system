@@ -1,0 +1,36 @@
+repos:
+- hooks:
+  - files: ^.*.py$
+    id: end-of-file-fixer
+  - files: ^.*.py$
+    id: trailing-whitespace
+  repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.4.0
+- hooks:
+  - id: yapf
+    name: yapf
+    entry: yapf
+    language: system
+    types: [python]
+    args: ["-i"]
+    require_serial: false
+    additional_dependencies: []
+  repo: local
+- hooks:
+  - id: flake8
+  repo: https://gitlab.com/pycqa/flake8
+  rev: 3.9.0
+- hooks:
+  - entry: poetry export -f requirements.txt -o requirements.txt
+    files: ^(pyproject.toml|poetry.lock)$
+    id: sync-requirements
+    language: system
+    name: Sync requeriments.txt
+    pass_filenames: false
+  repo: local
+- hooks:
+  - id: commitizen
+    stages:
+    - commit-msg
+  repo: https://github.com/commitizen-tools/commitizen
+  rev: v2.17.0

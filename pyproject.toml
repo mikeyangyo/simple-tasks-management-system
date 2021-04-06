@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "task-management-system"
+version = "v0.0.0"
+description = "a task management system build with docker, mysql, python"
+authors = ["MikeYang <perryvm06vm06@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "~3.7"
+Flask = "~1.1"
+PyMySQL = "~1.0.2"
+
+[tool.poetry.dev-dependencies]
+yapf = "^0.31.0"
+flake8 = "^3.9.0"
+commitizen = "^2.17.0"
+pre-commit = "^2.11.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "v0.0.0"
+tag_format = "v$major.$minor.$patch"
+version_files = [
+  "pyproject.toml:version"
+]

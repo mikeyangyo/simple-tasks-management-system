@@ -27,7 +27,7 @@ def listing_tasks():
 
 @task_bp.route('/', methods=['POST'])
 def create_task():
-    body = request.form
+    body = request.json
     task_name = body.get('name')
     if not task_name:
         abort(HttpStatusCode.BadRequest.value, description="name not found")
@@ -75,22 +75,25 @@ def retrieve_task(_id: int):
 
 @task_bp.route('/<_id>', methods=['PUT'])
 def update_task(_id: int):
-    body = request.form
+    body = request.json
     updated_part = {}
     task_name = body.get('name')
     task_status = body.get('status')
-    try:
-        task_status = int(task_status)
-    except ValueError:
-        abort(HttpStatusCode.BadRequest.value,
-              description="task status must be int type")
-    if task_status not in (0, 1):
-        abort(HttpStatusCode.BadRequest.value,
-              description="task status must be 0 or 1")
-    if task_name:
-        updated_part['name'] = task_name
-    if task_status:
+    if task_status is not None:
+        try:
+            task_status = int(task_status)
+        except ValueError:
+            abort(HttpStatusCode.BadRequest.value,
+                  description="task status must be int type")
+        if task_status not in (0, 1):
+            abort(HttpStatusCode.BadRequest.value,
+                  description="task status must be 0 or 1")
         updated_part['status'] = task_status
+    if task_name is not None:
+        if not task_name:
+            abort(HttpStatusCode.BadRequest.value,
+                  description="task name cannot be empty")
+        updated_part['name'] = task_name
 
     if not updated_part:
         return {}, HttpStatusCode.OK.value
@@ -100,10 +103,10 @@ def update_task(_id: int):
         connection = get_connection()
         try:
             with connection.cursor() as cursor:
-                cursor.execute('UPDATE tasks SET %s WHERE id=%s', (','.join([
-                    '{}="{}"'.format(key, val)
-                    for key, val in updated_part.items()
-                ]), _id))
+                cursor.execute(
+                    'UPDATE tasks SET {} WHERE id=%s'.format(','.join(
+                        ['{}=%s'.format(key) for key in updated_part.keys()])),
+                    list(updated_part.values()) + [_id])
                 connection.commit()
                 cursor.execute('SELECT * FROM tasks WHERE id=%s LIMIT 1',
                                (_id, ))
@@ -149,6 +152,7 @@ def delete_task(_id: int):
         try:
             with connection.cursor() as cursor:
                 cursor.execute('DELETE FROM tasks WHERE id=%s', (_id, ))
+                connection.commit()
         except Exception as e:
             current_app.logger.exception("Got Uncaught Error")
             abort(HttpStatusCode.InternalError.value, description=str(e))

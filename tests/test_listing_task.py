@@ -6,7 +6,7 @@ def listing_tasks(client):
 
 
 def test_listing_tasks_pass(client):
-    rv = listing_tasks()
+    rv = listing_tasks(client)
     result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)

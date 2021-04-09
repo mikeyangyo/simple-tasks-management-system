@@ -14,7 +14,7 @@ def test_update_task_pass(client):
     task_name = 'test_task_3'
     rv = create_task(client, {'name': task_name})
     assert rv.status_code == HttpStatusCode.Created.value
-    rv = listing_tasks()
+    rv = listing_tasks(client)
     result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
@@ -63,7 +63,7 @@ def test_update_task_with_try_to_update_id(client):
     task_name = 'test_task_5'
     rv = create_task(client, {'name': task_name})
     assert rv.status_code == HttpStatusCode.Created.value
-    rv = listing_tasks()
+    rv = listing_tasks(client)
     result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
@@ -114,7 +114,7 @@ def test_update_task_with_undefined_status(client):
     task_name = 'test_task_6'
     rv = create_task(client, {'name': task_name})
     assert rv.status_code == HttpStatusCode.Created.value
-    rv = listing_tasks()
+    rv = listing_tasks(client)
     result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
@@ -154,7 +154,7 @@ def test_update_task_with_space_name(client):
     task_name = 'test_task_8'
     rv = create_task(client, {'name': task_name})
     assert rv.status_code == HttpStatusCode.Created.value
-    rv = listing_tasks()
+    rv = listing_tasks(client)
     result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)

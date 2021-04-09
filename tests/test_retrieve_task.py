@@ -13,7 +13,7 @@ def test_retrieve_task_pass(client):
     task_name = 'test_task_2'
     rv = create_task(client, {'name': task_name})
     assert rv.status_code == HttpStatusCode.Created.value
-    rv = listing_tasks()
+    rv = listing_tasks(client)
     result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)

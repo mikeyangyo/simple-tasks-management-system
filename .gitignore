@@ -134,3 +134,4 @@ dmypy.json
 configs/*
 !configs/__init__.py
 !configs/*.example.*
+!configs/config.py

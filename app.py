@@ -7,6 +7,9 @@ from utils.enums import HttpStatusCode
 def create_app():
     app = Flask(__name__)
 
+    # config app
+    app.config.from_object('configs.config.Config')
+
     # register blueprints
     app.register_blueprint(task_bp)
 

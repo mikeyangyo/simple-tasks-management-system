@@ -1,12 +1,12 @@
 from pymysql import connect
 from pymysql.cursors import DictCursor
-from configs import db_config
+from flask import current_app
 
 
-def get_connection():
-    return connect(host=db_config.DB_HOST,
-                   user=db_config.DB_USER,
-                   password=db_config.DB_PASSWORD,
-                   database=db_config.DB_NAME,
-                   port=db_config.DB_PORT,
+def get_connection(with_db=True):
+    return connect(host=current_app.config['DB_HOST'],
+                   user=current_app.config['DB_USER'],
+                   password=current_app.config['DB_PASSWORD'],
+                   database=current_app.config['DB_NAME'] if with_db else '',
+                   port=current_app.config['DB_PORT'],
                    cursorclass=DictCursor)

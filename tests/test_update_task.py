@@ -186,10 +186,94 @@ def test_update_task_with_space_name(client):
     assert task['id'] == task_created['id']
     assert task['status'] == task_created['status']
 
-    status_updated = 2
+    status_updated = 1
     name_updated = '   '
     rv = update_task(client, task['id'], {
         'status': status_updated,
         'name': name_updated
     })
     assert rv.status_code == HttpStatusCode.BadRequest.value
+
+
+def test_update_task_with_not_digit_status(client):
+    # expected: raise 400
+    task_name = 'test_task_10'
+    rv = create_task(client, {'name': task_name})
+    assert rv.status_code == HttpStatusCode.Created.value
+    rv = listing_tasks(client)
+    result_dict = rv.json
+    assert rv.status_code == HttpStatusCode.OK.value
+    assert isinstance(result_dict, dict)
+    assert 'result' in result_dict.keys()
+    tasks = result_dict['result']
+    assert isinstance(tasks, list)
+    found = False
+    task_created = {}
+    for task in tasks:
+        assert set(['name', 'id', 'status']) == set(task.keys())
+        if task['name'] == task_name:
+            found = True
+            task_created = task.copy()
+            break
+    assert found
+    rv = retrieve_task(client, task_created['id'])
+    result_dict = rv.json
+    assert rv.status_code == HttpStatusCode.OK.value
+    assert isinstance(result_dict, dict)
+    assert 'result' in result_dict.keys()
+    task = result_dict['result']
+    assert isinstance(task, dict)
+    assert task['name'] == task_name
+    assert task['id'] == task_created['id']
+    assert task['status'] == task_created['status']
+
+    status_updated = 'a'
+    name_updated = 'test_task_11'
+    rv = update_task(client, task['id'], {
+        'status': status_updated,
+        'name': name_updated
+    })
+    assert rv.status_code == HttpStatusCode.BadRequest.value
+
+
+def test_update_task_with_empty_payload(client):
+    # expected: raise 400
+    task_name = 'test_task_10'
+    rv = create_task(client, {'name': task_name})
+    assert rv.status_code == HttpStatusCode.Created.value
+    rv = listing_tasks(client)
+    result_dict = rv.json
+    assert rv.status_code == HttpStatusCode.OK.value
+    assert isinstance(result_dict, dict)
+    assert 'result' in result_dict.keys()
+    tasks = result_dict['result']
+    assert isinstance(tasks, list)
+    found = False
+    task_created = {}
+    for task in tasks:
+        assert set(['name', 'id', 'status']) == set(task.keys())
+        if task['name'] == task_name:
+            found = True
+            task_created = task.copy()
+            break
+    assert found
+    rv = retrieve_task(client, task_created['id'])
+    result_dict = rv.json
+    assert rv.status_code == HttpStatusCode.OK.value
+    assert isinstance(result_dict, dict)
+    assert 'result' in result_dict.keys()
+    task = result_dict['result']
+    assert isinstance(task, dict)
+    assert task['name'] == task_name
+    assert task['id'] == task_created['id']
+    assert task['status'] == task_created['status']
+
+    rv = update_task(client, task['id'], {})
+    assert rv.status_code == HttpStatusCode.OK.value
+
+
+def test_update_task_with_not_found_resource(client):
+    # expected: raise 404
+    task_name = 'test_task_12'
+    rv = update_task(client, 10000000, {'name': task_name})
+    assert rv.status_code == HttpStatusCode.NotFound.value

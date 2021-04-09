@@ -31,6 +31,7 @@ def test_update_task_pass(client):
             break
     assert found
     rv = retrieve_task(client, task_created['id'])
+    result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
     assert 'result' in result_dict.keys()
@@ -48,6 +49,7 @@ def test_update_task_pass(client):
     })
     assert rv.status_code == HttpStatusCode.OK.value
     rv = retrieve_task(client, task['id'])
+    result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
     assert 'result' in result_dict.keys()
@@ -80,6 +82,7 @@ def test_update_task_with_try_to_update_id(client):
             break
     assert found
     rv = retrieve_task(client, task_created['id'])
+    result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
     assert 'result' in result_dict.keys()
@@ -99,6 +102,7 @@ def test_update_task_with_try_to_update_id(client):
     })
     assert rv.status_code == HttpStatusCode.BadRequest.value
     rv = retrieve_task(client, task['id'])
+    result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
     assert 'result' in result_dict.keys()
@@ -131,6 +135,7 @@ def test_update_task_with_undefined_status(client):
             break
     assert found
     rv = retrieve_task(client, task_created['id'])
+    result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
     assert 'result' in result_dict.keys()
@@ -171,6 +176,7 @@ def test_update_task_with_space_name(client):
             break
     assert found
     rv = retrieve_task(client, task_created['id'])
+    result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
     assert 'result' in result_dict.keys()

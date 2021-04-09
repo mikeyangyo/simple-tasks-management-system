@@ -31,6 +31,7 @@ def test_delete_task_pass(client):
             break
     assert found
     rv = retrieve_task(client, task_created['id'])
+    result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value
     assert isinstance(result_dict, dict)
     assert 'result' in result_dict.keys()

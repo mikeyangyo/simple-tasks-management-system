@@ -100,7 +100,7 @@ def test_update_task_with_try_to_update_id(client):
         'status': status_updated,
         'name': name_updated
     })
-    assert rv.status_code == HttpStatusCode.BadRequest.value
+    assert rv.status_code == HttpStatusCode.OK.value
     rv = retrieve_task(client, task['id'])
     result_dict = rv.json
     assert rv.status_code == HttpStatusCode.OK.value

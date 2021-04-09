@@ -26,6 +26,7 @@ used for run all migration files
 
 ## Test
 just run `pytest`
+or run `pytest --cov=. --cov-report term-missing` to generate coverage report
 
 ## Development
 you can use envs listed below

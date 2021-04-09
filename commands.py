@@ -5,6 +5,7 @@ from flask.cli import with_appcontext
 from os import path, listdir
 from utils.db import get_connection
 
+
 def run_migrations():
     base_root = current_app.config['BASE_ROOT']
     migrations_folder = path.join(base_root, 'migrations')
@@ -40,6 +41,7 @@ def run_migrations():
                     connection.close()
             except Exception:
                 current_app.logger.exception('DB Connect Fail')
+
 
 @click.command('run-migrations')
 @with_appcontext

@@ -2,6 +2,7 @@ from .test_create_task import create_task
 from .test_listing_task import listing_tasks
 from .test_retrieve_task import retrieve_task
 from utils.enums import HttpStatusCode
+from flask import current_app
 
 
 def update_task(client, _id: int, data: dict):
@@ -277,3 +278,9 @@ def test_update_task_with_not_found_resource(client):
     task_name = 'test_task_12'
     rv = update_task(client, 10000000, {'name': task_name})
     assert rv.status_code == HttpStatusCode.NotFound.value
+
+
+def test_update_task_with_wrong_db_connection_args(client):
+    current_app.config['DB_HOST'] = 'wrong_host'
+    rv = update_task(client, 1, {'name': '123'})
+    assert rv.status_code == HttpStatusCode.InternalError.value

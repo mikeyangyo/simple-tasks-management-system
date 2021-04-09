@@ -29,6 +29,9 @@ def listing_tasks():
 def create_task():
     body = request.json
     task_name = body.get('name')
+    if task_name is None:
+        abort(HttpStatusCode.BadRequest.value, description="name not found")
+    task_name = task_name.strip()
     if not task_name:
         abort(HttpStatusCode.BadRequest.value, description="name not found")
 
@@ -90,6 +93,7 @@ def update_task(_id: int):
                   description="task status must be 0 or 1")
         updated_part['status'] = task_status
     if task_name is not None:
+        task_name = task_name.strip()
         if not task_name:
             abort(HttpStatusCode.BadRequest.value,
                   description="task name cannot be empty")

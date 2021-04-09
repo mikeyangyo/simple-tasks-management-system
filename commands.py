@@ -28,8 +28,6 @@ def run_migrations():
             sql_command = row.strip()
             if not sql_command:
                 continue
-            print(sql_command)
-            print('---')
             try:
                 connection = get_connection()
                 try:

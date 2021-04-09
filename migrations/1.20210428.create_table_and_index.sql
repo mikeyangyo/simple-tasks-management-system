@@ -1,0 +1,7 @@
+CREATE TABLE tasks (
+id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(30) NOT NULL,
+status INT(1) NOT NULL DEFAULT 0
+);
+
+CREATE INDEX idx_status ON tasks(status);

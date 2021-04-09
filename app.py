@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 
+from commands import run_migrations_command
 from tasks.views import task_bp
 from utils.enums import HttpStatusCode
 
@@ -12,6 +13,9 @@ def create_app():
 
     # register blueprints
     app.register_blueprint(task_bp)
+
+    # add commands
+    app.cli.add_command(run_migrations_command)
 
     # configurations
     app.url_map.strict_slashes = False

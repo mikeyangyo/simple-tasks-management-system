@@ -40,3 +40,9 @@ def test_create_task_with_empty_name(client):
     task_name = ''
     rv = create_task(client, {'name': task_name})
     assert rv.status_code == HttpStatusCode.BadRequest.value
+
+
+def test_create_task_with_empty_payload(client):
+    # expected: raise 400
+    rv = create_task(client, {})
+    assert rv.status_code == HttpStatusCode.BadRequest.value

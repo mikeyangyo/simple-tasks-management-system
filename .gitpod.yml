@@ -2,13 +2,17 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - name: run post-start script
-    command: bash .gitpod.post_create.sh
+  - init: &&
+      cp configs/db_config.example.py configs/db_config.py;
+      echo "{\"python.linting.pylintEnabled\":false,\"python.linting.flake8Enabled\":true,\"python.linting.enabled\":true,\"python.formatting.provider\":\"yapf\"}" > .vscode/settings.json;
+      gp await-port 3306 && mysql -u root < migrations/gitpod_init.sql;
+      export PIP_USER=false;
+      poetry install;
+      poetry run pre-commit install --install-hooks;
+      FLASK_APP=app.py .venv/bin/flask run-migrations;
 
 vscode:
   extensions:
     - ms-python.vscode-pylance
-    - mtxr.sqltools
-    - mtxr.mtxr.sqltools-driver-mysql
     - streetsidesoftware.code-spell-checker
     - bungcip.better-toml

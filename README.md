@@ -1,35 +1,76 @@
 # tasks-management-system
-a tasks management system build with python Flask, mysql, docker
+> a tasks management system apis to manage todo list
 
-## APIs
-### List tasks
-List tasks in db
+![Python Version](https://img.shields.io/badge/python-3.7-blue)
+![Repo L](https://img.shields.io/github/license/mikeyangyo/tasks-management-system)
 
-### Retrieve task
-Retrieve task with given id
+A tasks management system apis to management todo list.
+Build with Flask, Mysql, Docker
 
-### Create task
-Create a task with given name
+## Usage example
+1. Use below command to start api application.
+```sh
+docker-compose up -d --build
+```
+2. run migration commands to create table in MySQL database
+```sh
+FLASK_APP=app.py flask run-migrations
+```
 
-### Update task
-Update a task with given name or status
-- if resource not found, will return 404
+3. visit following api endpoints to interacte with system.
+    - List tasks
+      ```
+      GET /tasks
+      ```
+    - Retrieve task
+      ```
+      Get /tasks/:id
+      ```
+    - Create task
+      ```
+      POST /tasks
+      ```
+    - Update task
+      ```
+      PUT /tasks/:id
+      ```
+    - Delete task
+      ```
+      DELETE /tasks/:id
+      ```
 
-### Delete task
-Delete a task
-- if resource not found, will return 404
-
-## Commands
-### run-migrations
-used for run all migration files
-- migration filename pattern: `<serial_number>.<date>.<description>.sql`
-
-## Test
-just run `pytest`
-or run `pytest --cov=. --cov-report term-missing` to generate coverage report
-
-## Development
-you can use envs listed below
+## Development setup
+you can use envs listed below to setup a dev env easily.
 - devcontainer
 - gitpod
 - docker
+
+Or install module dependencies with 
+1. pip
+```sh
+pip install -r requirements
+```
+2. [Poetry](https://python-poetry.org/)
+```sh
+poetry install
+```
+
+- Hints:
+    - Create new migration need to follow the filename pattern (`<serial_number>.<date>.<description>.sql`)
+
+## Meta
+
+MikeYang – [@mikeyangyo](https://twitter.com/mikeyangyo) – perryvm06vm06@gmail.com
+
+Distributed under the MIT license. See ``LICENSE`` for more information.
+
+[https://github.com/mikeyangyo/](https://github.com/mikeyangyo/)
+
+## Contributing
+
+1. Fork it (<https://github.com/mikeyangyo/tasks-management-system/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+4. Commit your changes (`git commit -am 'Add some fooBar'`)
+5. Run test before pushing (`pytest`)
+6. Push to the branch (`git push origin feature/fooBar`)
+7. Create a new Pull Request
